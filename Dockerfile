@@ -2,7 +2,10 @@
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY ./*.sln ./
+COPY ./*/*.csproj ./
+RUN for file in $(ls *.csproj); do mkdir -p ./${file%.*}/ && mv $file ./${file%.*}/; done
+
 RUN dotnet restore
 
 # copy and build everything else
